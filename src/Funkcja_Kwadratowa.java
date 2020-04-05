@@ -9,9 +9,12 @@ public class Funkcja_Kwadratowa extends JFrame {
     JTextField ta,tb,tc;
     int a,b,c;
     Painter p1;
+    private int width = 820;
+    private int height = 620;
+    private int textFieldsHeight = 80;
     public Funkcja_Kwadratowa()
     {
-        this.setSize(800,600);
+        this.setSize(width,height);
         this.setLocationRelativeTo(null);
         this.setTitle("Funkcja Kwadratowa");
         newPanel = new JPanel();
@@ -27,7 +30,7 @@ public class Funkcja_Kwadratowa extends JFrame {
         b1 = new JButton("Oblicz");
         ActionListenerfob1 alfb1 = new ActionListenerfob1();
         b1.addActionListener(alfb1);
-        p1 = new Painter();
+        p1 = new Painter(width,height,textFieldsHeight);
 
         newPanel.add(la);
         newPanel.add(ta);
@@ -48,9 +51,9 @@ public class Funkcja_Kwadratowa extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource()==b1)
             {
-                a=Integer.valueOf(ta.getText());
-                b=Integer.valueOf(tb.getText());
-                c=Integer.valueOf(tc.getText());
+                a=Integer.parseInt(ta.getText());
+                b=Integer.parseInt(tb.getText());
+                c=Integer.parseInt(tc.getText());
                 ZeroPlaces(a,b,c);
                 p1.a=a;
                 p1.b=b;
@@ -69,14 +72,13 @@ public class Funkcja_Kwadratowa extends JFrame {
         {
             x1= (float) (-b-Math.sqrt(delta))/(2*a);
             x2= (float) (-b+Math.sqrt(delta))/(2*a);
-            String info ="Miejsca zerowe funkcji: "+ String.valueOf(x1)+" i "+String.valueOf(x2);
-           // System.out.println("delta: "+delta+" x1: "+x1+" x2: "+x2);
+            String info ="Miejsca zerowe funkcji: "+ x1+" i "+x2;
             JOptionPane.showMessageDialog(Funkcja_Kwadratowa.this, info, "Wynik", JOptionPane.INFORMATION_MESSAGE);
         }
         else if(delta==0)
         {
-            x1=(-b)/(2*a);
-            String info ="Funkcja ma jedno miejsce zerowe: "+String.valueOf(x1);
+            x1= (float)(-b)/(2*a);
+            String info ="Funkcja ma jedno miejsce zerowe: "+x1;
             JOptionPane.showMessageDialog(Funkcja_Kwadratowa.this, info, "Wynik", JOptionPane.INFORMATION_MESSAGE);
         }
         else

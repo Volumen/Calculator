@@ -1,80 +1,122 @@
 import javax.swing.*;
+//import java.awt.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
-import javax.swing.*;
 
 public class Painter extends JComponent
 {
     float a=2000,b=2000,c=2000;
-    int x0=390,y0=270;
-    Painter()
+    private int x0=390,y0=270;
+    private int windowWidth, windowHeight;//size of window which we are drawing (with borders)
+    private int xZeroWithoutBorder, yZeroWithoutBorder;// zero in our layout without borders (left up corner)
+    private int borderWidth=10;
+    private int xAxisPosition , yAxisPosition = windowWidth/2 ;
+    Painter(int width, int height, int textFieldsHeight)
     {
-        setPreferredSize(new Dimension(800-20,600));
+        windowWidth = width-20; //it's better
+        windowHeight = height-textFieldsHeight;
+        setPreferredSize(new Dimension(windowWidth,windowHeight));
+        xZeroWithoutBorder = borderWidth/2;
+        yZeroWithoutBorder = borderWidth/2;
+        
     }
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
+        System.out.println("Width: "+windowWidth+" Height: "+windowHeight);
         Graphics2D lines = (Graphics2D) g;
         lines.setColor(Color.BLACK);
         lines.setStroke(new BasicStroke(2));
-        lines.draw(new Line2D.Float(0,getHeight()/2-30,getWidth(),getHeight()/2-30));
-        lines.draw(new Line2D.Float(getWidth()/2,getHeight(),getWidth()/2,0));
-        drawArrow(lines,getWidth()-10,getHeight()/2-30,getWidth(),getHeight()/2-30);
-        drawArrow(lines,getWidth()/2,10,getWidth()/2,0);
+
+        lines.draw(new Line2D.Float(0,windowHeight/2.0f,windowWidth,windowHeight/2));
+        lines.draw(new Line2D.Float(windowWidth/2,windowHeight,windowWidth/2,0));
+
+//        drawArrow(lines,windowWidth-10,windowHeight/2-30,windowWidth,windowHeight/2-30,8);  //vertical
+//        drawArrow(lines,windowWidth/2,10,windowWidth/2,0, 8);         //horizontal
+//
+        drawArrows(lines, 10, 10);
+        ////////////////////////
+        lines.setColor(Color.RED);
+        lines.setStroke(new BasicStroke(2));
+        drawTestLine(lines, xZeroWithoutBorder,yZeroWithoutBorder,50,50);
+        lines.setStroke(new BasicStroke(borderWidth));
+        lines.setColor(Color.BLACK);
+        drawBorders(lines);
+        lines.setStroke(new BasicStroke(2));
+        lines.setColor(Color.BLACK);
+        ///////////////////////////////
+
+
+
         drawNumbers(lines);
         drawLines(lines);
         Parabola(lines);
     }
-    public void drawArrow(Graphics2D g, int x1, int y1, int x2, int y2)
+    public void drawArrows(Graphics2D g, int arrowDistanceFromAxisX, int arrowDistance)
+    {
+        g.draw(new Line2D.Float(windowWidth-arrowDistance,windowHeight/2,windowWidth,windowHeight/2));
+    }
+    public void drawTestLine(Graphics2D g, int x1, int y1, int x2, int y2){
+
+        g.draw(new Line2D.Float(x1,y1,x2,y2));
+    }
+    public void drawArrow(Graphics2D g, int x1, int y1, int x2, int y2, int arrowSize)
     {
         if(y1==y2) {
-            g.draw(new Line2D.Float(x1, y1 - 8, x2, y2));
-            g.draw(new Line2D.Float(x1, y1 + 8, x2, y2));
+            g.draw(new Line2D.Float(x1, y1 - arrowSize, x2, y2));
+            g.draw(new Line2D.Float(x1, y1 + arrowSize, x2, y2));
         }
         else if(x1==x2)
         {
-            g.draw(new Line2D.Float(x1-8, y1 , x2, y2));
-            g.draw(new Line2D.Float(x1+8, y1 , x2, y2));
+            g.draw(new Line2D.Float(x1-arrowSize, y1 , x2, y2));
+            g.draw(new Line2D.Float(x1+arrowSize, y1 , x2, y2));
         }
     }
     public void drawNumbers(Graphics2D g)
     {
         g.setStroke(new BasicStroke(2));
         g.setFont(new Font("TimesRoman", Font.BOLD, 10));
-        for(int i =0; i<getWidth();i++) {
+        for(int i =0; i<windowWidth;i++) {
             if(i==400){}
                 else
-            g.drawString(""+(i-400)%49, i-13, getHeight()/2-10);
+            g.drawString(""+(i-400)%49, i-13, windowHeight/2-10);
             i=i+49;
         }
-        for(int i =0; i<getHeight()-20;i++) {
+        for(int i =0; i<windowHeight-20;i++) {
             if(i==300)
             { }
             else
-            g.drawString(""+(-(i-300))%49, getWidth()/2+10, i-27);
+            g.drawString(""+(-(i-300))%49, windowWidth/2+10, i-27);
             i=i+49;
         }
     }
+    public void drawBorders(Graphics2D g){
+        g.drawLine(0, 0 ,0, windowHeight);
+        g.drawLine(0, 0 ,windowWidth, 0);
+        g.drawLine(windowWidth-1, 0 ,windowWidth-1, windowHeight);
+        g.drawLine(0, windowHeight-1 ,windowWidth, windowHeight-1);
+//        g.drawLine(i, windowHeight/2-5 ,i, windowHeight/2+5);
+    }
     public void drawLines(Graphics2D g)
     {
-        for(int i=0;i<getWidth();i++)
+        for(int i=0;i<windowWidth;i++)
         {
-            g.drawLine(i, getHeight()/2-30-5 ,i, getHeight()/2-30+5);
+            g.drawLine(i, windowHeight/2-5 ,i, windowHeight/2+5);
             i=i+9;
         }
         for(int i=10;i<580;i++)
         {
-            g.drawLine(getWidth()/2-5, i,getWidth()/2+5, i);
+            g.drawLine(windowWidth/2-5, i,windowWidth/2+5, i);
             i=i+9;
         }
         g.setStroke(new BasicStroke(1/2));
         g.setColor(Color.gray);
-        for(int i = 0; i<580; i++) {
-            g.drawLine(0, i, getWidth(), i);
+        for(int i = 0; i<=580-50; i++) {
+            g.drawLine(0, i, windowWidth, i);
             i=i+9;
         }
-        for(int i = 0; i<getWidth(); i++) {
-            g.drawLine(i, 0, i, getHeight());
+        for(int i = 0; i<windowWidth; i++) {
+            g.drawLine(i, 0, i, windowHeight);
 
             i=i+9;
         }
@@ -86,12 +128,12 @@ public class Painter extends JComponent
     {
         g.setStroke(new BasicStroke(2));
         double y1,y2,yk1,yk2,xk1,xk2;
-        double x1=0,x2=0;
+        double x1,x2;
         for(int i = 1;i<3000;i++) {
             x1=-300+0.25*i;
             x2=-300+0.25*i+1;
-            y1 = (double) f(x1)*0.02;
-            y2 = (double) f(x2)*0.02;
+            y1 =f(x1)*0.02;
+            y2 =f(x2)*0.02;
 
             float delta;
             delta = (float) (Math.pow(b,2) - (4 * a * c));

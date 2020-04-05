@@ -66,7 +66,7 @@ public class Main extends JFrame {
         public void actionPerformed(ActionEvent e) {
             if(e.getSource()==b1)
             {
-                Decybele d1 = new Decybele();
+                Decibels d1 = new Decibels();
             }
             else if(e.getSource()==b2)
             {

@@ -5,13 +5,13 @@ import java.awt.event.ActionListener;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-public class Decybele extends JFrame {
+public class Decibels extends JFrame {
     JPanel newPanel;
     JLabel l1,l2,l3,l4;
     JButton b1,b2,b3,b4;
     JTextField t1,t2,t3,t4;
 
-    public Decybele()
+    public Decibels()
     {
         this.setSize(230,200);
         this.setLocationRelativeTo(null);
