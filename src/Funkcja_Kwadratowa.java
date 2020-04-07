@@ -10,7 +10,7 @@ public class Funkcja_Kwadratowa extends JFrame {
     int a,b,c;
     Painter p1;
     private int width = 820;
-    private int height = 620;
+    private int height = 680;
     private int textFieldsHeight = 80;
     public Funkcja_Kwadratowa()
     {
@@ -20,6 +20,7 @@ public class Funkcja_Kwadratowa extends JFrame {
         newPanel = new JPanel();
         la = new JLabel("A:");
         ta = new JTextField("1",5);
+
 
         lb = new JLabel("B:");
         tb = new JTextField("0",5);
